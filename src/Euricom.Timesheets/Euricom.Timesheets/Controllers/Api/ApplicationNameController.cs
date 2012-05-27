@@ -3,36 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using Euricom.Timesheets.Infrastructure;
+using Euricom.Timesheets.Models.Entities;
+using MongoDB.Driver.Builders;
 
 namespace Euricom.Timesheets.Controllers.Api
 {
     public class ApplicationNameController : ApiController
     {
+        private IMongoContext _mongoContext;
+
+        public ApplicationNameController()
+        {
+            // No DI for now, can be added later
+            _mongoContext = new MongoContext();
+        }
+
         // GET /api/applicationname
-        public IEnumerable<string> Get()
+        public IEnumerable<ApplicationName> Get()
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET /api/applicationname/5
-        public string Get(int id)
+            return _mongoContext.GetCollection<ApplicationName>().FindAll();
+        }              
+        
+        public void Put(string id, string value)
         {
-            return "value";
+            _mongoContext.GetCollection<ApplicationName>().Update(Query.EQ("_id", id), Update.Set("Value", value));
         }
-
-        // POST /api/applicationname
+        
         public void Post(string value)
         {
-        }
-
-        // PUT /api/applicationname/5
-        public void Put(int id, string value)
-        {
-        }
-
-        // DELETE /api/applicationname/5
-        public void Delete(int id)
-        {
-        }
+            _mongoContext.GetCollection<ApplicationName>().Insert(new ApplicationName() { Value = value });
+        }   
     }
 }
