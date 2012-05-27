@@ -22,9 +22,7 @@ namespace Euricom.Timesheets.Infrastructure
         }
 
         public MongoContext()
-            : this(ConfigurationManager.AppSettings["MONGOHQ_URI"])
-        {
-        }
+            : this(ConfigurationManager.AppSettings["MONGOHQ_URI"]) { }
 
         private MongoDatabase Database
         {
