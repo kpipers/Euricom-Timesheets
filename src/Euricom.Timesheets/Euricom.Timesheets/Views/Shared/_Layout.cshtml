@@ -18,10 +18,10 @@
         <script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/knockout-2.0.0.js")" type="text/javascript"></script>
         <script type="text/javascript">
-            $(function () {
-                // define timesheets ns
-                var timesheets = timesheets || {};
+            // define timesheets ns
+            var timesheets = timesheets || {};
 
+            $(function () {
                 var applicationNameUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "ApplicationName" })';
 
                 $.get(applicationNameUrl, function(data) {
@@ -40,7 +40,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand applicationName" href="#"></a>
+            <a class="brand applicationName" href="#">Loading..</a>
             <div class="nav-collapse">
                 <ul class="nav">                      
                     <li class="">
@@ -54,7 +54,7 @@
 
         <div class="container">
         <header class="jumbotron subhead">
-            <h1 class="applicationName"></h1>            
+            <h1 class="applicationName">Loading..</h1>            
         </header>
 
         @RenderBody()
