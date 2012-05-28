@@ -18,21 +18,16 @@ namespace Euricom.Timesheets.Controllers.Api
             // No DI for now, can be added later
             _mongoContext = new MongoContext();
         }
-
-        // GET /api/applicationname
-        public IEnumerable<ApplicationName> Get()
+        
+        public ApplicationName Get()
         {
-            return _mongoContext.GetCollection<ApplicationName>().FindAll();
+            return _mongoContext.GetCollection<ApplicationName>().FindAll().First();
         }              
         
-        public void Put(string id, string value)
+        public void Put(string value)
         {
-            _mongoContext.GetCollection<ApplicationName>().Update(Query.EQ("_id", id), Update.Set("Value", value));
-        }
-        
-        public void Post(string value)
-        {
+            _mongoContext.GetCollection<ApplicationName>().Drop();
             _mongoContext.GetCollection<ApplicationName>().Insert(new ApplicationName() { Value = value });
-        }   
+        }    
     }
 }
