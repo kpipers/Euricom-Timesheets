@@ -1,3 +1,5 @@
+@model Euricom.Timesheets.Models.HomeModel
+
 @{
     ViewBag.Title = "Home Page";
 }
@@ -5,9 +7,70 @@
 @section Head {
     <script type="text/javascript">
         $(function () {
-            
+
+            $("form").submit(function (e) {
+                var month = $('#Month').val();
+                var year = $('#Year').val();
+
+                var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
+                requestUrl += '/' + year + '/' + month;
+                
+                $.get(requestUrl, function (data) {
+                    var dates = [];
+                    jQuery.each(data, function (i, val) {
+                        dates.push({ day: new Date(val.Date), isWeekend: val.IsWeekend });
+                    });
+
+                    $("#timesheetContainer div").remove();
+                    $("#dayTemplate").tmpl(dates).appendTo("#timesheetContainer");
+                    
+                });
+
+                e.preventDefault();
+            });
         });
+
+        function formatDate(date) {
+            var formattedDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+            return formattedDate;
+        }
+        
+        function styleDay(date, isWeekend) {
+            if (isWeekend) {
+                return "weekend";
+            }
+            else {
+                return "regularDay";
+            }
+        }
     </script>
 }
 
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.Month)</td>
+            <td>@Html.DropDownListFor(m => m.Month, Model.Months)</td>
+        </tr>
 
+        <tr>
+            <td>@Html.LabelFor(m => m.Year)</td>
+            <td>@Html.DropDownListFor(m => m.Year, Model.Years)</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="right">
+                <input type="submit" name="Submit" value="Submit" />
+            </td>
+        </tr>
+    </table>
+}
+
+<div id="timesheetContainer"></div>
+
+<script id="dayTemplate" type="text/x-jQuery-tmpl">
+    <div class="${styleDay(day, isWeekend)}">
+        <strong>${formatDate(day)}</strong>  
+    </div>
+</script>

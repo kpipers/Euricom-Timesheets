@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace Euricom.Timesheets.Infrastructure
 {

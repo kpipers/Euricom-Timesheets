@@ -14,7 +14,7 @@ namespace Euricom.Timesheets.Infrastructure
         };
 
         private MongoDatabase _database;
-        private string _connectionstring;
+        private readonly string _connectionstring;
 
         public MongoContext(string connectionstring)
         {

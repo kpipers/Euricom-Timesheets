@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Linq;
 using System.Web.Http;
 using Euricom.Timesheets.Infrastructure;
 using Euricom.Timesheets.Models.Entities;
-using MongoDB.Driver.Builders;
 
 namespace Euricom.Timesheets.Controllers.Api
 {
     public class ApplicationNameController : ApiController
     {
-        private IMongoContext _mongoContext;
+        private readonly IMongoContext _mongoContext;
 
         public ApplicationNameController()
         {
