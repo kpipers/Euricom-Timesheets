@@ -8,41 +8,44 @@
     <script type="text/javascript">
         $(function () {
 
+            timesheets.Day = function (day, isWeekend) {
+                this.day = day;
+                this.isWeekend = isWeekend;
+
+                this.cssclass = ko.computed(function () {
+                    return this.isWeekend ? "weekend" : "regularDay";                    
+                }, this);
+
+                this.formattedDay = ko.computed(function () {
+                    return this.day.getDate() + "/" + (this.day.getMonth() + 1) + "/" + this.day.getFullYear();
+                }, this);
+            };
+
+            timesheets.ViewModel = function (days) {
+                this.days = ko.observableArray(days);
+            };
+
             $("form").submit(function (e) {
                 var month = $('#Month').val();
                 var year = $('#Year').val();
 
                 var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
                 requestUrl += '/' + year + '/' + month;
-                
+
                 $.get(requestUrl, function (data) {
                     var dates = [];
                     jQuery.each(data, function (i, val) {
-                        dates.push({ day: new Date(val.Date), isWeekend: val.IsWeekend });
+                        dates.push(new timesheets.Day(
+                            new Date(val.Date), val.IsWeekend));
                     });
 
-                    $("#timesheetContainer div").remove();
-                    $("#dayTemplate").tmpl(dates).appendTo("#timesheetContainer");
-                    
+                    ko.applyBindings(new timesheets.ViewModel(dates));
                 });
 
                 e.preventDefault();
             });
-        });
-
-        function formatDate(date) {
-            var formattedDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-            return formattedDate;
-        }
-        
-        function styleDay(date, isWeekend) {
-            if (isWeekend) {
-                return "weekend";
-            }
-            else {
-                return "regularDay";
-            }
-        }
+        });        
+       
     </script>
 }
 
@@ -67,10 +70,11 @@
     </table>
 }
 
-<div id="timesheetContainer"></div>
+<table>
+    <tbody data-bind="foreach: days">
+        <tr>
+            <td data-bind="text: formattedDay, attr: { 'class': cssclass }"></td>
+        </tr>
+    </tbody>
+</table>
 
-<script id="dayTemplate" type="text/x-jQuery-tmpl">
-    <div class="${styleDay(day, isWeekend)}">
-        <strong>${formatDate(day)}</strong>  
-    </div>
-</script>
