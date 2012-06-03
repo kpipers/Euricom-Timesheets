@@ -22,15 +22,13 @@
 
             timesheets.ViewModel = function (days) {
                 this.days = ko.observableArray(days);
-                this.loadNewDays = function () {
+                this.reloadDays = function () {
                     var self = this;
 
                     this._fetchDates(function (days) {
                         // this looks stupid, need to review
                         self.days.removeAll();
-                        for (var day in days) {
-                            console.log(days[day]);
-
+                        for (var day in days) {                    
                             self.days.push(days[day]);
                         }
                     });
@@ -46,7 +44,6 @@
                         jQuery.each(data, function (i, val) {
                             dates.push(new timesheets.Day(new Date(val.Date), val.IsWeekend));
                         });
-
                         callback(dates);
                     });
                 };
@@ -73,7 +70,7 @@
 
         <tr>
             <td colspan="2" align="right">
-                <input type="submit" name="Submit" value="Submit" data-bind="click: loadNewDays" />
+                <input type="submit" name="Submit" value="Submit" data-bind="click: reloadDays" />
             </td>
         </tr>
     </table>
