@@ -39,7 +39,7 @@
                     var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
                     requestUrl += '/' + this.selectedYear() + '/' + this.selectedMonth();
 
-                    $.get(requestUrl, function (data) {
+                    $.getJSON(requestUrl, function (data) {
                         var dates = [];
                         jQuery.each(data, function (i, val) {
                             dates.push(new timesheets.Day(new Date(val.Date), val.IsWeekend));
