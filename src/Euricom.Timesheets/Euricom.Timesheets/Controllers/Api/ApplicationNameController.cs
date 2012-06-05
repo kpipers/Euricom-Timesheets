@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Euricom.Timesheets.Infrastructure;
 using Euricom.Timesheets.Models.Entities;
+using System;
 
 namespace Euricom.Timesheets.Controllers.Api
 {
@@ -9,10 +10,14 @@ namespace Euricom.Timesheets.Controllers.Api
     {
         private readonly IMongoContext _mongoContext;
 
-        public ApplicationNameController()
+        public ApplicationNameController(IMongoContext context)
         {
-            // No DI for now, can be added later
-            _mongoContext = new MongoContext();
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
+            _mongoContext = context;
         }
         
         public ApplicationName Get()

@@ -53,12 +53,14 @@ namespace Euricom.Timesheets
 
             BundleTable.Bundles.RegisterTemplateBundles();
 
-            InitializeDatabase();
-            RegisterJsonNet(GlobalConfiguration.Configuration);
+            InitializeDatabase();          
+
+            ConfigureApi(GlobalConfiguration.Configuration);
         }
 
-        private static void RegisterJsonNet(HttpConfiguration configuration)
+        private void ConfigureApi(HttpConfiguration configuration)
         {
+            // JSON formatter
             configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
 
             var serializerSettings = new JsonSerializerSettings();
@@ -66,6 +68,11 @@ namespace Euricom.Timesheets
             var jsonFormatter = new JsonNetFormatter(serializerSettings);
 
             configuration.Formatters[0] = jsonFormatter;
+
+            // DI
+            var modules = new[] { new RuntimeModule() };
+            var resolver = new NinjectResolver(modules);
+            configuration.ServiceResolver.SetResolver(resolver);
         }
 
         private void InitializeDatabase()
