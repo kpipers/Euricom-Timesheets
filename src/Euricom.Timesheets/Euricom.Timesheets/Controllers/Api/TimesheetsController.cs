@@ -21,7 +21,7 @@ namespace Euricom.Timesheets.Controllers.Api
                 d =>
                 timesheetDays.Add(new TimesheetDay
                 {
-                    Date = d.UnixTicks(),
+                    Date = d,
                     IsWeekend = d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday
                 }));
 

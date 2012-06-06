@@ -6,6 +6,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Euricom.Timesheets.Models.Entities;
 using MongoDB.Driver;
+using Newtonsoft.Json;
+using Euricom.Timesheets.Util;
 
 namespace Euricom.Timesheets
 {
@@ -51,7 +53,26 @@ namespace Euricom.Timesheets
 
             BundleTable.Bundles.RegisterTemplateBundles();
 
-            InitializeDatabase();
+            InitializeDatabase();          
+
+            ConfigureApi(GlobalConfiguration.Configuration);
+        }
+
+        private void ConfigureApi(HttpConfiguration configuration)
+        {
+            // JSON formatter
+            configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+
+            var serializerSettings = new JsonSerializerSettings();
+            serializerSettings.Converters.Add(new UnixDateTimeConverter());
+            var jsonFormatter = new JsonNetFormatter(serializerSettings);
+
+            configuration.Formatters[0] = jsonFormatter;
+
+            // DI
+            var modules = new[] { new RuntimeModule() };
+            var resolver = new NinjectResolver(modules);
+            configuration.ServiceResolver.SetResolver(resolver);
         }
 
         private void InitializeDatabase()
