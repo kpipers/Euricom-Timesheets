@@ -2,10 +2,6 @@
 
 ## Technology stack
 
-### Track Azure
-
-### Track Alt
-
 - ASP.NET MVC
 - ASP.NET WebAPI
 - MongoDB
@@ -13,10 +9,6 @@
 - Knockout.js
 
 ## Installation
-
-### Track Azure
-
-### Track Alt
 
 ## Day 1
 
