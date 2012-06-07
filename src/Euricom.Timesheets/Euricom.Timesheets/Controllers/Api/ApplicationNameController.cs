@@ -3,32 +3,38 @@ using System.Web.Http;
 using Euricom.Timesheets.Infrastructure;
 using Euricom.Timesheets.Models.Entities;
 using System;
+using Euricom.Core.Data;
 
 namespace Euricom.Timesheets.Controllers.Api
 {
     public class ApplicationNameController : ApiController
     {
-        private readonly IMongoContext _mongoContext;
+        private readonly IRepository _repository;
 
-        public ApplicationNameController(IMongoContext context)
+        public ApplicationNameController(IRepository repository)
         {
-            if (context == null)
+            if (repository == null)
             {
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException("repository");
             }
 
-            _mongoContext = context;
+            _repository = repository;
         }
         
         public ApplicationName Get()
         {
-            return _mongoContext.GetCollection<ApplicationName>().FindAll().First();
+            return _repository.All<ApplicationName>().First();
         }              
         
         public void Put(string value)
         {
-            _mongoContext.GetCollection<ApplicationName>().Drop();
-            _mongoContext.GetCollection<ApplicationName>().Insert(new ApplicationName() { Value = value });
+            var applicationName = _repository.All<ApplicationName>().First();
+            if (applicationName == null)
+            {
+                applicationName = new ApplicationName();
+            }
+            applicationName.Value = value;
+            _repository.Save<ApplicationName>(applicationName);
         }    
     }
 }
