@@ -6,7 +6,9 @@
 
 @section Head {
     <script type="text/javascript">
+
         $(function () {
+
             timesheets.Day = function (day, isWeekend) {
                 this.day = day;
                 this.isWeekend = isWeekend;
@@ -18,26 +20,31 @@
                 this.formattedDay = ko.computed(function () {
                     return this.day.getDate() + "/" + (this.day.getMonth() + 1) + "/" + this.day.getFullYear();
                 }, this);
+            };           
+
+            var timesheet = function () {
+                this.year = ko.observable("");
+                this.month = ko.observable("");
+                this.timesheetDays = ko.observableArray([]);
             };
 
-            timesheets.ViewModel = function (days) {
-                this.days = ko.observableArray(days);
+            timesheetViewModel = function () {
+                this.timesheet = new timesheet();
+
                 this.reloadDays = function () {
                     var self = this;
 
                     this._fetchDates(function (days) {
-                        // this looks stupid, need to review
-                        self.days.removeAll();
-                        for (var day in days) {                    
-                            self.days.push(days[day]);
+                        self.timesheet.timesheetDays.removeAll();
+                        for (var day in days) {
+                            self.timesheet.timesheetDays.push(days[day]);
                         }
                     });
                 };
-                this.selectedMonth = ko.observable("");
-                this.selectedYear = ko.observable("");
-                this._fetchDates = function(callback) {
+
+                this._fetchDates = function (callback) {
                     var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
-                    requestUrl += '/' + this.selectedYear() + '/' + this.selectedMonth();
+                    requestUrl += '/' + this.timesheet.year() + '/' + this.timesheet.month();
 
                     $.getJSON(requestUrl, function (data) {
                         var dates = [];
@@ -47,9 +54,9 @@
                         callback(dates);
                     });
                 };
-            };
+            }            
 
-            ko.applyBindings(new timesheets.ViewModel([]));
+            ko.applyBindings(new timesheetViewModel());
         });        
        
     </script>
@@ -60,24 +67,24 @@
     <table>
         <tr>
             <td>@Html.LabelFor(m => m.Month)</td>
-            <td>@Html.DropDownListFor(m => m.Month, Model.Months, new { data_bind = "value:selectedMonth" })</td>
+            <td>@Html.DropDownListFor(m => m.Month, Model.Months, new { data_bind = "value:timesheet.month" })</td>
         </tr>
 
         <tr>
             <td>@Html.LabelFor(m => m.Year)</td>
-            <td>@Html.DropDownListFor(m => m.Year, Model.Years, new { data_bind = "value:selectedYear" })</td>
+            <td>@Html.DropDownListFor(m => m.Year, Model.Years, new { data_bind = "value:timesheet.year" })</td>
         </tr>
 
         <tr>
             <td colspan="2" align="right">
-                <input type="submit" name="Submit" value="Submit" data-bind="click: reloadDays" />
+                <input type="submit" name="Submit" value="Get timesheet" data-bind="click: reloadDays" />
             </td>
         </tr>
     </table>
 }
 
 <table id="calendar">
-    <tbody data-bind="foreach: days">
+    <tbody data-bind="foreach: timesheet.timesheetDays">
         <tr>
             <td data-bind="text: formattedDay, attr: { 'class': cssclass }"></td>
         </tr>
