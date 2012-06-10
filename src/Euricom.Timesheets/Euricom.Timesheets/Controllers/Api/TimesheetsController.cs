@@ -4,11 +4,32 @@ using System.Linq;
 using System.Web.Http;
 using Euricom.Timesheets.Models.Entities;
 using Euricom.Timesheets.Util;
+using System.Net.Http;
+using System.Net;
+using Euricom.Timesheets.Infrastructure;
 
 namespace Euricom.Timesheets.Controllers.Api
 {
     public class TimesheetsController : ApiController
     {
+        IMongoContext _mongoContext;
+
+        public TimesheetsController(IMongoContext mongoContext)
+        {
+            _mongoContext = mongoContext;
+        }
+
+        // GET /api/timesheets/101
+        [HttpGet]
+        public Timesheet Get(int id)
+        {
+            var timesheet = new Timesheet();
+            if (timesheet == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            return timesheet;
+        }
+
+        // GET /api/timesheets/2012/6
         [HttpGet]
         public IEnumerable<TimesheetDay> Get(int year, int month)
         {
@@ -26,6 +47,20 @@ namespace Euricom.Timesheets.Controllers.Api
                 }));
 
             return timesheetDays;
+        }
+
+        // POST /api/timesheets
+        public HttpResponseMessage<Timesheet> Post(Timesheet timesheet)
+        {
+            var response = new HttpResponseMessage<Timesheet>(timesheet, HttpStatusCode.Created);
+
+            // TODO: Save the timesheet
+
+            // Where is the new timesheet?
+            string uri = Url.Route(null, new { id = 101 });
+            response.Headers.Location = new Uri(Request.RequestUri, uri);
+            
+            return response;
         }
     }
 }

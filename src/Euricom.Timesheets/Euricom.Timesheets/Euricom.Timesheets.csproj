@@ -156,6 +156,7 @@
     </Compile>
     <Compile Include="Infrastructure\IMongoContext.cs" />
     <Compile Include="Infrastructure\MongoContext.cs" />
+    <Compile Include="Models\Entities\Timesheet.cs" />
     <Compile Include="NinjectResolver.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Entities\ApplicationName.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Util\DateTimeExtensions.cs" />
     <Compile Include="Util\DoubleExtensions.cs" />
     <Compile Include="Util\JsonNetFormatter.cs" />
+    <Compile Include="Util\LongExtensions.cs" />
     <Compile Include="Util\UnixDateTimeConverter.cs" />
   </ItemGroup>
   <ItemGroup>

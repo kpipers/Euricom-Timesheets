@@ -5,13 +5,13 @@ using System.Web;
 
 namespace Euricom.Timesheets.Util
 {
-    public static class DoubleExtensions
+    public static class LongExtensions
     {
-        public static DateTime FromUnixTicks(this double ticks)
+        public static DateTime FromUnixTicks(this long ticks)
         {
             var date = new DateTime(1970, 1, 1);
-            date = date.AddSeconds(ticks);
+            date = date.AddMilliseconds(ticks);
             return date;
         }
-    }   
+    }
 }

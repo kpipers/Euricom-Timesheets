@@ -9,14 +9,14 @@ namespace Euricom.Timesheets.Util
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
-            if (reader.TokenType != JsonToken.Float)
+            if (reader.TokenType != JsonToken.Integer)
             {
                 throw new Exception(
                     String.Format("Unexpected token parsing date. Expected Float, got {0}.",
                     reader.TokenType));
             }
 
-            var ticks = (double)reader.Value;
+            var ticks = (long)reader.Value;
 
             return ticks.FromUnixTicks();
         }

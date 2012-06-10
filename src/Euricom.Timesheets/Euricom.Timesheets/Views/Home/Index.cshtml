@@ -9,18 +9,20 @@
 
         $(function () {
 
-            timesheets.Day = function (day, isWeekend) {
-                this.day = day;
+            timesheets.Day = function (date, isWeekend, workingDay) {
+                this.date = date;
                 this.isWeekend = isWeekend;
+                this.workingDay = workingDay;
 
                 this.cssclass = ko.computed(function () {
                     return this.isWeekend ? "weekend" : "regularDay";
                 }, this);
 
                 this.formattedDay = ko.computed(function () {
-                    return this.day.getDate() + "/" + (this.day.getMonth() + 1) + "/" + this.day.getFullYear();
+                    var currentDate = new Date(this.date);
+                    return currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + "/" + currentDate.getFullYear();
                 }, this);
-            };           
+            };
 
             var timesheet = function () {
                 this.year = ko.observable("");
@@ -42,6 +44,26 @@
                     });
                 };
 
+                this.sendWorkingDays = function () {
+                    var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
+
+                    var timesheet = ko.toJSON(this.timesheet);
+
+                    $.ajax({
+                        type: "POST",
+                        url: requestUrl,
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: timesheet,
+                        success: function (result) {
+                            alert('Timesheet saved.');
+                        },
+                        error: function (error) {
+                            alert(error);
+                        }
+                    });
+                };
+
                 this._fetchDates = function (callback) {
                     var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
                     requestUrl += '/' + this.timesheet.year() + '/' + this.timesheet.month();
@@ -49,12 +71,12 @@
                     $.getJSON(requestUrl, function (data) {
                         var dates = [];
                         jQuery.each(data, function (i, val) {
-                            dates.push(new timesheets.Day(new Date(val.Date), val.IsWeekend));
+                            dates.push(new timesheets.Day(val.Date, val.IsWeekend, val.WorkingDay));
                         });
                         callback(dates);
                     });
                 };
-            }            
+            }
 
             ko.applyBindings(new timesheetViewModel());
         });        
@@ -83,11 +105,14 @@
     </table>
 }
 
-<table id="calendar">
+<table id="calendar" style="width: 100%">
     <tbody data-bind="foreach: timesheet.timesheetDays">
-        <tr>
-            <td data-bind="text: formattedDay, attr: { 'class': cssclass }"></td>
+        <tr style="height: 40px;" data-bind="attr: { 'class': cssclass }">
+            <td style="width: 10%" data-bind="text: formattedDay"></td>
+            <td style="width: 90%" ><input type="text" data-bind="value: workingDay, visible: !isWeekend"/></td>
         </tr>
     </tbody>
 </table>
+
+<button data-bind="click: sendWorkingDays">Send Working Days</button>
 
