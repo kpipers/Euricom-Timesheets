@@ -9,32 +9,27 @@ namespace Euricom.Timesheets.Controllers.Api
 {
     public class ApplicationNameController : ApiController
     {
-        private readonly IRepository _repository;
+        private readonly IMongoContext _mongoContext;
 
-        public ApplicationNameController(IRepository repository)
+        public ApplicationNameController(IMongoContext mongoContext)
         {
-            if (repository == null)
+            if (mongoContext == null)
             {
-                throw new ArgumentNullException("repository");
+                throw new ArgumentNullException("mongoContext");
             }
 
-            _repository = repository;
+            _mongoContext = mongoContext;
         }
         
         public ApplicationName Get()
         {
-            return _repository.All<ApplicationName>().First();
+            return _mongoContext.GetCollection<ApplicationName>().FindAll().First();
         }              
         
         public void Put(string value)
         {
-            var applicationName = _repository.All<ApplicationName>().First();
-            if (applicationName == null)
-            {
-                applicationName = new ApplicationName();
-            }
-            applicationName.Value = value;
-            _repository.Save<ApplicationName>(applicationName);
+            _mongoContext.GetCollection<ApplicationName>().Drop();
+            _mongoContext.GetCollection<ApplicationName>().Insert(new ApplicationName() { Value = value });
         }    
     }
 }
