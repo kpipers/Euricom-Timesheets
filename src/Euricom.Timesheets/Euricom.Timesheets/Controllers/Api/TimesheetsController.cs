@@ -21,7 +21,7 @@ namespace Euricom.Timesheets.Controllers.Api
 
         // GET /api/timesheets/101
         [HttpGet]
-        public Timesheet Get(int id)
+        public Timesheet Get(long id)
         {
             var timesheet = new Timesheet();
             if (timesheet == null)
@@ -54,7 +54,8 @@ namespace Euricom.Timesheets.Controllers.Api
         {
             var response = new HttpResponseMessage<Timesheet>(timesheet, HttpStatusCode.Created);
 
-            // TODO: Save the timesheet
+            var repository = _mongoContext.GetCollection<Timesheet>();
+            repository.Insert(timesheet);
 
             // Where is the new timesheet?
             string uri = Url.Route(null, new { id = 101 });
