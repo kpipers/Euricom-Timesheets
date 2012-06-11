@@ -25,6 +25,7 @@
             };
 
             var timesheet = function () {
+                this.id = ko.observable("");
                 this.name = ko.observable("");
                 this.year = ko.observable("");
                 this.month = ko.observable("");
@@ -37,7 +38,8 @@
                 this.reloadDays = function () {
                     var self = this;
 
-                    this._fetchDates(function (days) {
+                    this._fetchDates(function (timesheetId, days) {
+                        self.timesheet.id = timesheetId;
                         self.timesheet.timesheetDays.removeAll();
                         for (var day in days) {
                             self.timesheet.timesheetDays.push(days[day]);
@@ -74,7 +76,7 @@
                         jQuery.each(data.timesheetDays, function (i, val) {
                             dates.push(new timesheets.Day(val.Date, val.IsWeekend, val.WorkingDay));
                         });
-                        callback(dates);
+                        callback(data.id, dates);
                     });
                 };
             }

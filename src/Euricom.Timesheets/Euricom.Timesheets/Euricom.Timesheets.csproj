@@ -169,6 +169,7 @@
     <Compile Include="Util\DoubleExtensions.cs" />
     <Compile Include="Util\JsonNetFormatter.cs" />
     <Compile Include="Util\LongExtensions.cs" />
+    <Compile Include="Util\ObjectIdConverter.cs" />
     <Compile Include="Util\UnixDateTimeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
