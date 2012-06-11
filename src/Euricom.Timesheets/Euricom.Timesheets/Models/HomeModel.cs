@@ -10,6 +10,10 @@ namespace Euricom.Timesheets.Models
     public class HomeModel
     {
         [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
         [Display(Name = "Month")]
         public int Month { get; set; }
 

@@ -6,6 +6,9 @@ namespace Euricom.Timesheets.Models.Entities
     [JsonObject(MemberSerialization.OptIn)]
     public class Timesheet
     {
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
         [JsonProperty(PropertyName = "year")]
         public int Year { get; set; }
 

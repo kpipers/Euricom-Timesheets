@@ -54,7 +54,7 @@ namespace Euricom.Timesheets.Controllers.Api
         {
             var response = new HttpResponseMessage<Timesheet>(timesheet, HttpStatusCode.Created);
 
-            var repository = _mongoContext.GetCollection<Timesheet>();
+            var repository = _mongoContext.GetCollection<Timesheet>(); ;
             repository.Insert(timesheet);
 
             // Where is the new timesheet?

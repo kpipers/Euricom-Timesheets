@@ -25,6 +25,7 @@
             };
 
             var timesheet = function () {
+                this.name = ko.observable("");
                 this.year = ko.observable("");
                 this.month = ko.observable("");
                 this.timesheetDays = ko.observableArray([]);
@@ -87,6 +88,10 @@
 @using (Html.BeginForm())
 {
     <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.Name)</td>
+            <td>@Html.TextBoxFor(m => m.Name, new { data_bind = "value:timesheet.name" })</td>
+        </tr>
         <tr>
             <td>@Html.LabelFor(m => m.Month)</td>
             <td>@Html.DropDownListFor(m => m.Month, Model.Months, new { data_bind = "value:timesheet.month" })</td>
