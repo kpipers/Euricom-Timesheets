@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace Euricom.Timesheets.Models.Entities
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Timesheet
+    public class Timesheet : Entity
     {
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
