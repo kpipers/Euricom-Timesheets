@@ -37,7 +37,7 @@ namespace Euricom.Timesheets.Controllers.Api
 
         // GET /api/timesheets/2012/6
         [HttpGet]
-        public IEnumerable<TimesheetDay> Get(int year, int month)
+        public Timesheet Get(int year, int month)
         {
             var repository = _mongoContext.GetCollection<Timesheet>();
 
@@ -61,12 +61,15 @@ namespace Euricom.Timesheets.Controllers.Api
                         IsWeekend = d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday
                     }));
 
-                return timesheetDays;
+                timesheet = new Timesheet 
+                { 
+                    Year = year, 
+                    Month = month, 
+                    WorkingDays = timesheetDays 
+                };
             }
-            else
-            {
-                return timesheet.WorkingDays;
-            }
+
+            return timesheet;
         }
 
         // POST /api/timesheets

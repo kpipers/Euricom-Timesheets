@@ -71,7 +71,7 @@
 
                     $.getJSON(requestUrl, function (data) {
                         var dates = [];
-                        jQuery.each(data, function (i, val) {
+                        jQuery.each(data.timesheetDays, function (i, val) {
                             dates.push(new timesheets.Day(val.Date, val.IsWeekend, val.WorkingDay));
                         });
                         callback(dates);
