@@ -35,15 +35,16 @@ namespace Euricom.Timesheets.Controllers.Api
             return timesheet;
         }
 
-        // GET /api/timesheets/2012/6
+        // GET /api/timesheets/christophe/2012/6
         [HttpGet]
-        public Timesheet Get(int year, int month)
+        public Timesheet Get(string name, int year, int month)
         {
             var repository = _mongoContext.GetCollection<Timesheet>();
 
             var query = Query.And(
                 Query.EQ("Year", year),
-                Query.EQ("Month", month));
+                Query.EQ("Month", month),
+                Query.EQ("Name", name.ToLowerInvariant()));
 
             var timesheet = repository.Find(query).SingleOrDefault();
             if (timesheet == null)
@@ -63,6 +64,7 @@ namespace Euricom.Timesheets.Controllers.Api
 
                 timesheet = new Timesheet 
                 { 
+                    Name = name,
                     Year = year, 
                     Month = month, 
                     WorkingDays = timesheetDays 
@@ -76,6 +78,8 @@ namespace Euricom.Timesheets.Controllers.Api
         [HttpPost]
         public HttpResponseMessage<Timesheet> Post(Timesheet timesheet)
         {
+            timesheet.Name = timesheet.Name.ToLowerInvariant();
+
             var response = new HttpResponseMessage<Timesheet>(timesheet, HttpStatusCode.Created);
 
             var repository = _mongoContext.GetCollection<Timesheet>();
@@ -96,9 +100,10 @@ namespace Euricom.Timesheets.Controllers.Api
 
             var repository = _mongoContext.GetCollection<Timesheet>();
 
-            var update = Update.Set("Name", timesheet.Name)
-                               .Set("Year", timesheet.Year)
+            var update = Update.Set("Year", timesheet.Year)
                                .Set("Month", timesheet.Month);
+
+                        
 
             // TODO: Update WorkingDays
 

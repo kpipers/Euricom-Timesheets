@@ -36,6 +36,11 @@
                 this.timesheet = new timesheet();
 
                 this.reloadDays = function () {
+                    if ($.trim(this.timesheet.name()) == "" || this.timesheet.month() == "" || this.timesheet.year() == "") {
+                        alert('Please fill in all the fields.');
+                        return;
+                    }
+
                     var self = this;
 
                     this._fetchDates(function (timesheetId, days) {
@@ -48,18 +53,22 @@
                 };
 
                 this.sendWorkingDays = function () {
+                    var self = this;
                     var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
 
-                    var timesheet = ko.toJSON(this.timesheet);
+                    var timesheet = ko.toJSON(self.timesheet);
+
+                    var httpVerb = !self.timesheet.id ? "POST" : "PUT";
 
                     $.ajax({
-                        type: "POST",
+                        type: httpVerb,
                         url: requestUrl,
                         dataType: "json",
                         contentType: "application/json",
                         data: timesheet,
                         success: function (result) {
-                            alert('Timesheet saved.');
+                            self.timesheet.id = result.id;
+                            alert('Timesheet saved.'); this
                         },
                         error: function (error) {
                             alert(error);
@@ -69,7 +78,7 @@
 
                 this._fetchDates = function (callback) {
                     var requestUrl = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "timesheets" })';
-                    requestUrl += '/' + this.timesheet.year() + '/' + this.timesheet.month();
+                    requestUrl += '/' + this.timesheet.name() + '/' + this.timesheet.year() + '/' + this.timesheet.month();
 
                     $.getJSON(requestUrl, function (data) {
                         var dates = [];
@@ -87,30 +96,28 @@
     </script>
 }
 
-@using (Html.BeginForm())
-{
-    <table>
-        <tr>
-            <td>@Html.LabelFor(m => m.Name)</td>
-            <td>@Html.TextBoxFor(m => m.Name, new { data_bind = "value:timesheet.name" })</td>
-        </tr>
-        <tr>
-            <td>@Html.LabelFor(m => m.Month)</td>
-            <td>@Html.DropDownListFor(m => m.Month, Model.Months, new { data_bind = "value:timesheet.month" })</td>
-        </tr>
+<table>
+    <tr>
+        <td>@Html.LabelFor(m => m.Name)</td>
+        <td>@Html.TextBoxFor(m => m.Name, new { data_bind = "value:timesheet.name" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(m => m.Month)</td>
+        <td>@Html.DropDownListFor(m => m.Month, Model.Months, new { data_bind = "value:timesheet.month" })</td>
+    </tr>
 
-        <tr>
-            <td>@Html.LabelFor(m => m.Year)</td>
-            <td>@Html.DropDownListFor(m => m.Year, Model.Years, new { data_bind = "value:timesheet.year" })</td>
-        </tr>
+    <tr>
+        <td>@Html.LabelFor(m => m.Year)</td>
+        <td>@Html.DropDownListFor(m => m.Year, Model.Years, new { data_bind = "value:timesheet.year" })</td>
+    </tr>
 
-        <tr>
-            <td colspan="2" align="right">
-                <input type="submit" name="Submit" value="Get timesheet" data-bind="click: reloadDays" />
-            </td>
-        </tr>
-    </table>
-}
+    <tr>
+        <td colspan="2" align="right">
+            <input type="submit" name="Submit" value="Get timesheet" data-bind="click: reloadDays" />
+            <input type="button" name="Send" value="Send Working Days" data-bind="click: sendWorkingDays" />
+        </td>
+    </tr>
+</table>
 
 <table id="calendar" style="width: 100%">
     <tbody data-bind="foreach: timesheet.timesheetDays">
@@ -120,6 +127,4 @@
         </tr>
     </tbody>
 </table>
-
-<button data-bind="click: sendWorkingDays">Send Working Days</button>
 

@@ -20,15 +20,24 @@ namespace Euricom.Timesheets.Util
                     reader.TokenType));
             }
 
-            return new ObjectId((string)reader.Value);
+            var value = (string)reader.Value;
+            return String.IsNullOrEmpty(value) ? ObjectId.Empty : new ObjectId(value);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is ObjectId)
             {
-                var id = ((ObjectId)value).ToString();
-                writer.WriteValue(id);
+                var objectId = (ObjectId)value;
+
+                if (objectId != ObjectId.Empty)
+                {
+                    writer.WriteValue(objectId.ToString());
+                }
+                else
+                {
+                    writer.WriteValue(String.Empty);
+                }
             }
             else
             {
