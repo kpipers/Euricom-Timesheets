@@ -96,18 +96,13 @@ namespace Euricom.Timesheets.Controllers.Api
         [HttpPut]
         public HttpResponseMessage<Timesheet> Put(Timesheet timesheet)
         {
+            timesheet.Name = timesheet.Name.ToLowerInvariant();
+
             var response = new HttpResponseMessage<Timesheet>(timesheet, HttpStatusCode.OK);
 
-            var repository = _mongoContext.GetCollection<Timesheet>();
+            var repository = _mongoContext.GetCollection<Timesheet>();         
 
-            var update = Update.Set("Year", timesheet.Year)
-                               .Set("Month", timesheet.Month);
-
-                        
-
-            // TODO: Update WorkingDays
-
-            repository.Update(Query.EQ("_id", timesheet.Id), update);
+            repository.Save(timesheet);                       
 
             // Where is the modified timesheet?
             string uri = Url.Route(null, new { id = timesheet.Id });
