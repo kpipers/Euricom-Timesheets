@@ -3,7 +3,6 @@ using System.Web.Http;
 using Euricom.Timesheets.Infrastructure;
 using Euricom.Timesheets.Models.Entities;
 using System;
-using Euricom.Core.Data;
 
 namespace Euricom.Timesheets.Controllers.Api
 {
