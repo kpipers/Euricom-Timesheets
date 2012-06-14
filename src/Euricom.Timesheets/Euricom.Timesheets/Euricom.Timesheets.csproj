@@ -150,6 +150,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\Api\ApplicationNameController.cs" />
+    <Compile Include="Controllers\Api\TimesheetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -158,6 +159,8 @@
     <Compile Include="Infrastructure\MongoContext.cs" />
     <Compile Include="Models\Entities\ApplicationName.cs" />
     <Compile Include="Models\Entities\Entity.cs" />
+    <Compile Include="Models\Entities\Timesheet.cs" />
+    <Compile Include="Models\Entities\TimesheetDay.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="NinjectResolver.cs" />
     <Compile Include="NinjectScope.cs" />
