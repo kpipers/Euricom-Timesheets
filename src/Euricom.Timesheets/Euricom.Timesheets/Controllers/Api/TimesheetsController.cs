@@ -30,7 +30,7 @@ namespace Euricom.Timesheets.Controllers.Api
             var query = Query.EQ("_id", new ObjectId(id));
             var timesheet = repository.Find(query).SingleOrDefault();
             if (timesheet == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest));
 
             return timesheet;
         }
@@ -76,11 +76,11 @@ namespace Euricom.Timesheets.Controllers.Api
 
         // POST /api/timesheets
         [HttpPost]
-        public HttpResponseMessage<Timesheet> Post(Timesheet timesheet)
+        public HttpResponseMessage Post(Timesheet timesheet)
         {
             timesheet.Name = timesheet.Name.ToLowerInvariant();
 
-            var response = new HttpResponseMessage<Timesheet>(timesheet, HttpStatusCode.Created);
+            var response = Request.CreateResponse<Timesheet>(HttpStatusCode.Created, timesheet);
 
             var repository = _mongoContext.GetCollection<Timesheet>();
             repository.Insert(timesheet);
@@ -94,11 +94,11 @@ namespace Euricom.Timesheets.Controllers.Api
 
         // PUT /api/timesheets
         [HttpPut]
-        public HttpResponseMessage<Timesheet> Put(Timesheet timesheet)
+        public HttpResponseMessage Put(Timesheet timesheet)
         {
             timesheet.Name = timesheet.Name.ToLowerInvariant();
 
-            var response = new HttpResponseMessage<Timesheet>(timesheet, HttpStatusCode.OK);
+            var response = Request.CreateResponse<Timesheet>(HttpStatusCode.OK, timesheet);
 
             var repository = _mongoContext.GetCollection<Timesheet>();         
 

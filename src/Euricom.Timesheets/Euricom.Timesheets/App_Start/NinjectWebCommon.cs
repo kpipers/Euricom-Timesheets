@@ -12,7 +12,7 @@ namespace Euricom.Timesheets.App_Start
     using Ninject.Web.Common;
     using Euricom.Timesheets.Infrastructure;
     using System.Web.Http;
-    using System.Web.Mvc;
+    using Euricom.Timesheets.Web;
 
     public static class NinjectWebCommon 
     {
@@ -48,7 +48,7 @@ namespace Euricom.Timesheets.App_Start
             
             RegisterServices(kernel);
 
-            GlobalConfiguration.Configuration.ServiceResolver.SetResolver(new NinjectResolver(kernel));
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
 
             return kernel;
         }
