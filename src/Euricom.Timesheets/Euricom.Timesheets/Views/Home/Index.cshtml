@@ -8,9 +8,46 @@
     <script type="text/javascript">
 
         $(function () {
-            // Your code here
-            // ...
+            
+            var ViewModel = function () {
+
+                this.months = ko.observableArray([                    
+                    { id: 1, value: 'January' },
+                    { id: 2, value: 'February' },
+                    { id: 3, value: 'March' },
+                    { id: 4, value: 'April' },
+                    { id: 5, value: 'May' },
+                    { id: 6, value: 'June' },
+                    { id: 7, value: 'Juli' },
+                    { id: 8, value: 'August' },
+                    { id: 9, value: 'September' },
+                    { id: 10, value: 'October' },
+                    { id: 11, value: 'November' },
+                    { id: 12, value: 'December' }
+                ]);
+
+                this.selectedMonth = ko.observable(1);
+
+                this.getTimesheet = function () {
+                    alert(this.selectedMonth());
+                }
+
+            };
+
+            ko.applyBindings(new ViewModel());
+
         });        
        
     </script>
 }
+
+
+<div id="selection">
+    <form class="well">
+        <label>Name</label>
+        @Html.TextBox("Name")
+        <label>Month</label>
+        <select data-bind="options: months, optionsValue: 'id',optionsText: 'value', value: selectedMonth"></select><br />
+        <button type="button" data-bind="click: getTimesheet" class="btn">Get timesheet</button>
+    </form>
+</div>

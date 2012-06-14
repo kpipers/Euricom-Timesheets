@@ -19,13 +19,7 @@ namespace Euricom.Timesheets.Controllers.Api
         {
             this.context = context;
         }
-
-        // GET api/timesheet
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
+     
         // GET api/timesheet/5
         public Timesheet Get(string id)
         {
@@ -42,11 +36,6 @@ namespace Euricom.Timesheets.Controllers.Api
         // PUT api/timesheet/5
         public void Put(int id, string value)
         {
-        }
-
-        // DELETE api/timesheet/5
-        public void Delete(int id)
-        {
-        }
+        }       
     }
 }
