@@ -68,11 +68,6 @@ namespace Euricom.Timesheets
             var jsonFormatter = new JsonNetFormatter(serializerSettings);
 
             configuration.Formatters[0] = jsonFormatter;
-
-            // DI
-            var modules = new[] { new RuntimeModule() };
-            var resolver = new NinjectResolver(modules);
-            configuration.ServiceResolver.SetResolver(resolver);
         }
 
         private void InitializeDatabase()

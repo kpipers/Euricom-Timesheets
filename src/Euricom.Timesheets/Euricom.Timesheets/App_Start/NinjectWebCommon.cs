@@ -10,6 +10,9 @@ namespace Euricom.Timesheets.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using Euricom.Timesheets.Infrastructure;
+    using System.Web.Http;
+    using System.Web.Mvc;
 
     public static class NinjectWebCommon 
     {
@@ -44,6 +47,9 @@ namespace Euricom.Timesheets.App_Start
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
             
             RegisterServices(kernel);
+
+            GlobalConfiguration.Configuration.ServiceResolver.SetResolver(new NinjectResolver(kernel));
+
             return kernel;
         }
 
@@ -53,6 +59,7 @@ namespace Euricom.Timesheets.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IMongoContext>().To<MongoContext>().InRequestScope();
         }        
     }
 }

@@ -7,15 +7,15 @@ using Euricom.Timesheets.Infrastructure;
 using Ninject.Web.Common;
 using Ninject.Modules;
 
-namespace Euricom.Timesheets
+namespace Euricom.Timesheets.App_Start
 {
     internal class NinjectResolver : IDependencyResolver
     {
         private readonly IKernel _kernel;
 
-        public NinjectResolver(params NinjectModule[] modules)
-        {            
-            _kernel = new Ninject.StandardKernel(modules);
+        public NinjectResolver(IKernel kernel)
+        {
+            _kernel = kernel;
         }
 
         public object GetService(Type serviceType)
