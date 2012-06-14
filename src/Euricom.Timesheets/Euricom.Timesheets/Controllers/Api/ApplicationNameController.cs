@@ -22,7 +22,9 @@ namespace Euricom.Timesheets.Controllers.Api
         
         public ApplicationName Get()
         {
-            return _mongoContext.GetCollection<ApplicationName>().FindAll().First();
+            var an = _mongoContext.GetCollection<ApplicationName>().FindAll().First();
+            an.Value += "test";
+            return an;
         }              
         
         public void Put(string value)
