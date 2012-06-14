@@ -23,7 +23,7 @@ namespace Euricom.Timesheets.Controllers.Api
         public ApplicationName Get()
         {
             var an = _mongoContext.GetCollection<ApplicationName>().FindAll().First();
-            an.Value += "test";
+            an.Value += "tes2t";
             return an;
         }              
         
