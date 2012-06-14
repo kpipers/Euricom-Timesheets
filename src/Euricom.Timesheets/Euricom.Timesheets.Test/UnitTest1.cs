@@ -11,7 +11,7 @@ namespace Euricom.Timesheets.Test
     [TestClass]
     public class TimesheetControllerTest
     {
-        [TestInitialize]
+       // [TestInitialize]
         public void setup()
         {
             var context = new MongoContext();
