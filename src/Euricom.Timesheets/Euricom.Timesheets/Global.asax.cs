@@ -54,21 +54,7 @@ namespace Euricom.Timesheets
             BundleTable.Bundles.RegisterTemplateBundles();
 
             InitializeDatabase();          
-
-            //ConfigureApi(GlobalConfiguration.Configuration);
         }
-
-        //private void ConfigureApi(HttpConfiguration configuration)
-        //{
-        //    // JSON formatter
-        //    configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
-
-        //    var serializerSettings = new JsonSerializerSettings();
-        //    serializerSettings.Converters.Add(new UnixDateTimeConverter());
-        //    var jsonFormatter = new JsonNetFormatter(serializerSettings);
-
-        //    configuration.Formatters[0] = jsonFormatter;
-        //}
 
         private void InitializeDatabase()
         {

@@ -10,8 +10,7 @@ namespace Euricom.Timesheets.Infrastructure
     {
         private static readonly Dictionary<Type, string> _collectionMap = new Dictionary<Type, string>
         {
-            { typeof(ApplicationName), "ApplicationName" },
-            { typeof(Timesheet), "Timesheet" }
+            { typeof(ApplicationName), "ApplicationName" }
         };
 
         private MongoDatabase _database;

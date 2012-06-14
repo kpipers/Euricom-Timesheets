@@ -149,26 +149,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\ApplicationNameController.cs" />
-    <Compile Include="Controllers\Api\TimesheetsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\IMongoContext.cs" />
     <Compile Include="Infrastructure\MongoContext.cs" />
-    <Compile Include="Models\Entities\Timesheet.cs" />
-    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Entities\ApplicationName.cs" />
     <Compile Include="Models\Entities\Entity.cs" />
-    <Compile Include="Models\Entities\TimesheetDay.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="NinjectResolver.cs" />
     <Compile Include="NinjectScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\DateTimeExtensions.cs" />
-    <Compile Include="Util\DoubleExtensions.cs" />
     <Compile Include="Util\LongExtensions.cs" />
     <Compile Include="Util\ObjectIdConverter.cs" />
     <Compile Include="Util\UnixDateTimeConverter.cs" />
@@ -222,10 +216,6 @@
     <Content Include="Images\twitter.png" />
     <Content Include="Images\windowsLive.png" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
